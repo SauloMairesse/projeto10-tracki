@@ -6,10 +6,8 @@ import "../styles/reset.css"
 
 export default function Login(){
 
-    const {idSessao} = useParams()
     const [nameUser, setNameUser] = React.useState('')
     const [passwordUser, setPasswordUser] = React.useState('')
-
 
     let loginToPost = {}
     function myObjectToPost(){
