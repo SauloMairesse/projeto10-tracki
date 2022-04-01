@@ -6,14 +6,12 @@ import "../styles/reset.css"
 
 export default function Login(){
 
-    const [nameUser, setNameUser] = React.useState('')
-    const [passwordUser, setPasswordUser] = React.useState('')
+    const [loginINFO, setLoginINFO] = React.useState({email: '',
+                                                            name: '',
+                                                            password: '',
+                                                            picture:''})
 
     let loginToPost = {}
-    function myObjectToPost(){
-        loginToPost.push = {email: "...",
-                            password: "..."}
-    }
 
     return(
         <LoginScreen>
@@ -21,7 +19,7 @@ export default function Login(){
             <form action="">
                 <input type="text"  value={nameUser} 
                                     placeholder={'Email'} 
-                                    onChange={ (e) => setNameUser(e.target.value) }/>
+                                    onChange={ (e) => setRegisterINFO({...loginINFO, email: e.target.value}) } />
                 <input type="text"  value={passwordUser} 
                                     placeholder={'Senha'} 
                                     onChange={ (e) => setPasswordUser(e.target.value) }/>

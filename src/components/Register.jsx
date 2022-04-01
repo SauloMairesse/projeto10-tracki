@@ -1,42 +1,60 @@
 import React from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
+import axios from "axios"
 
 import "../styles/reset.css"
 
 
 export default function Register(){
 
-    
-    const [nameUser, setNameUser] = React.useState('')
-    const [passwordUser, setPasswordUser] = React.useState('')
-    const [emailUser, setEmailUser] = React.useState('')
-    const [imgUser, setImgUser] = React.useState('')
+    const navigate = useNavigate()
+
+    const [registerINFO, setRegisterINFO] = React.useState({email: '',
+                                                             name: '',
+                                                             password: '',
+                                                             picture:''})
+    console.log(registerINFO)
+    function registerUser(event){
+        event.preventDefault();
+        const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up'
+        const promise = axios.post(URL, {email: registerINFO.email,
+                                    name: registerINFO.name,
+                                    password: registerINFO.password,
+                                    picture: registerINFO.picture})
+        promise.then( console.log(registerINFO))
+        navigate('/')
+        promise.catch( err => console.log(err.response.data))
+    }
 
     return(
-        <RegisterScreen>
+        <RegisterHTML>
             <img src="../images/Group8.png" alt="" />
-            <form action="">
-                <input type="text"  value={emailUser} 
+            <form>
+                <input type="text" value={registerINFO.email}
                                     placeholder={'Email'} 
-                                    onChange={ (e) => setEmailUser(e.target.value) }/>
-                <input type="text"  value={passwordUser} 
-                                    placeholder={'Senha'} 
-                                    onChange={ (e) => setPasswordUser(e.target.value) }/>
-                <input type="text"  value={nameUser} 
+                                    onChange={ (e) => setRegisterINFO({...registerINFO, email: e.target.value}) }
+                />
+                <input type="text"  value={registerINFO.name}
                                     placeholder={'Nome'} 
-                                    onChange={ (e) => setNameUser(e.target.value) }/>
-                <input type="text"  value={imgUser} 
+                                    onChange={ (e) => setRegisterINFO({...registerINFO, name: e.target.value} ) }
+                />
+                <input type="password"  value={registerINFO.password} 
+                                        placeholder={'Senha'} 
+                                        onChange={ (e) => setRegisterINFO({...registerINFO, password: e.target.value}) }
+                />
+                <input type="text"  value={registerINFO.picture}
                                     placeholder={'foto'} 
-                                    onChange={ (e) => setImgUser(e.target.value) }/>
-                <button> Cadastrar </button>
+                                    onChange={ (e) => setRegisterINFO({...registerINFO, picture: e.target.value}) }
+                />
+                <button onClick={registerUser}> Cadastrar </button>
                 <Link to={`/`}> <span> Já possui Cadastro ? Faça login! </span> </Link>
             </form>
-        </RegisterScreen>
+        </RegisterHTML>
     )
 }
 
-const RegisterScreen = styled.main`
+const RegisterHTML = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
