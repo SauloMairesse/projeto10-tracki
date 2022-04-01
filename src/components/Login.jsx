@@ -1,34 +1,36 @@
 import React from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams }  from "react-router-dom"
 import styled from "styled-components"
-
+import axios from "axios"
 import "../styles/reset.css"
 
 export default function Login(){
 
+    const navegate = useNavigate();
+
     const [loginINFO, setLoginINFO] = React.useState({  email: '',
-                                                        password: ''})                            
+                                                        password: ''})     
+
     function loginEnter(event){
         event.preventDefault();
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login'
-        const promise = axios.post(URL, {email: loginINFO.email,
-                                    password: loginINFO.password })
-        promise.then( console.log(loginINFO))
-        navigate('/')
-        promise.catch( err => console.log(err.response.data))
+        const promise = axios.post(URL, {...loginINFO})
+        promise.then( (response) => {console.log(response.data)
+                                     navegate('/habitos')} )
+        promise.catch( (err) => console.log(err) )
     }
 
     return(
         <LoginScreen>
             <img src="../images/Group8.png" alt="" />
-            <form action="">
-                <input type="text"  value={loginINFO.email} 
-                                    placeholder={'Email'} 
-                                    onChange={ (e) => setLoginINFO({...loginINFO, email: e.target.value}) } />
+            <form onSubmit={loginEnter}>
+                <input type="email"  value={loginINFO.email} 
+                                     placeholder={'Email'} 
+                                     onChange={ (e) => setLoginINFO({...loginINFO, email: e.target.value}) } />
                 <input type="password"  value={loginINFO.password} 
-                                    placeholder={'Senha'} 
-                                    onChange={ (e) => setLoginINFO({...loginINFO, password: e.target.value}) } />
-                <button onClick={loginEnter}> Entrar </button>
+                                        placeholder={'Senha'} 
+                                        onChange={ (e) => setLoginINFO({...loginINFO, password: e.target.value}) } />
+                <button> Entrar </button>
             </form>
             <Link to={`/cadastro`}> <span> Ainda não possui Cadastro ? Cadastre-se </span> </Link>
         </LoginScreen>

@@ -6,25 +6,23 @@ import axios from "axios"
 import "../styles/reset.css"
 
 
-export default function Register(){
+export default function Cadastro(){
 
     const navigate = useNavigate()
-
-    const [registerINFO, setRegisterINFO] = React.useState({email: '',
+    
+    const [registerINFO, setRegisterINFO] = React.useState({ email: '',
                                                              name: '',
                                                              password: '',
-                                                             picture:''})
+                                                             image:''})
+                                                             
     console.log(registerINFO)
+
     function registerUser(event){
         event.preventDefault();
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up'
-        const promise = axios.post(URL, {email: registerINFO.email,
-                                    name: registerINFO.name,
-                                    password: registerINFO.password,
-                                    picture: registerINFO.picture})
-        promise.then( console.log(registerINFO))
+        const promise = axios.post(URL, {...registerINFO})
+        promise.then( console.log(" deu certo"))
         navigate('/')
-        promise.catch( err => console.log(err.response.data))
     }
 
     return(
@@ -43,9 +41,9 @@ export default function Register(){
                                         placeholder={'Senha'} 
                                         onChange={ (e) => setRegisterINFO({...registerINFO, password: e.target.value}) }
                 />
-                <input type="text"  value={registerINFO.picture}
+                <input type="text"  value={registerINFO.image}
                                     placeholder={'foto'} 
-                                    onChange={ (e) => setRegisterINFO({...registerINFO, picture: e.target.value}) }
+                                    onChange={ (e) => setRegisterINFO({...registerINFO, image: e.target.value}) }
                 />
                 <button onClick={registerUser}> Cadastrar </button>
                 <Link to={`/`}> <span> Já possui Cadastro ? Faça login! </span> </Link>
