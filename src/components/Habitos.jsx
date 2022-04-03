@@ -2,12 +2,18 @@ import React from "react"
 import styled from "styled-components"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
+import { useContext } from "react"
+import userINFO from "../contexts/userINFO"
 
 export default function Habitos(){
+
 
     const [addHabit, setAddHabit] = React.useState(0)
     const [newHabit, setNewHabit] = React.useState({ name: ""})
     let days = []
+
+    const {data} = useContext(userINFO)
+    console.log(data)
 
     if(addHabit === 0 ){
         return(
@@ -74,6 +80,11 @@ export default function Habitos(){
                             <button className="days" id='7' >S</button>
                         </div>
 
+                        <div>
+                            <button className="add"> <p>Salvar</p> </button>
+                            <button className="add"> <p>Cancelar</p> </button>
+                        </div>
+
                     </section>
 
                 </main>
@@ -89,6 +100,9 @@ export default function Habitos(){
 const HabitosHTML = styled.div`
     display: flex;
     flex-direction: column;
+    background: #F2F2F2;
+    width: 100%;
+    height: 100vh;
 
     header{
         display: flex;
@@ -107,7 +121,7 @@ const HabitosHTML = styled.div`
         justify-content: space-between;
         align-items: center;
         padding: 0 10px 0 10px;
-        background: #E5E5E5;    
+        /* background: #E5E5E5;     */
     }
     span{
         font-family: 'Lexend Deca', sans-serif;
@@ -171,7 +185,8 @@ const HabitosHTML = styled.div`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        /* background-color: #666666; */
+        padding: 10px 10px 10px 10px;
+        background-color: #fff;
     }
     .days{
         font-family: 'Lexend Deca', sans-serif;

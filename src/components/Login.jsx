@@ -4,9 +4,14 @@ import styled from "styled-components"
 import axios from "axios"
 import "../styles/reset.css"
 
+import { useContext } from "react"
+import userINFO from "../contexts/userINFO"
+
 export default function Login(){
 
     const navegate = useNavigate();
+
+    // const userINFO= useContext(userINFO)
 
     const [loginINFO, setLoginINFO] = React.useState({  email: '',
                                                         password: ''})     
@@ -15,8 +20,9 @@ export default function Login(){
         event.preventDefault();
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login'
         const promise = axios.post(URL, {...loginINFO})
-        promise.then( (response) => {console.log(response.data)
+        promise.then( (response) => { 
                                      navegate('/habitos')} )
+
         promise.catch( (err) => console.log(err) )
     }
 
@@ -77,4 +83,4 @@ const LoginScreen = styled.main`
         letter-spacing: 0em;
         text-align: center;
     }
-`;
+`; 
