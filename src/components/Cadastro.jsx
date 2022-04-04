@@ -2,9 +2,7 @@ import React from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios"
-
 import "../styles/reset.css"
-
 
 export default function Cadastro(){
 
@@ -46,8 +44,8 @@ export default function Cadastro(){
                                     onChange={ (e) => setRegisterINFO({...registerINFO, image: e.target.value}) }
                 />
                 <button onClick={registerUser}> Cadastrar </button>
-                <Link to={`/`}> <span> Já possui Cadastro ? Faça login! </span> </Link>
             </form>
+            <Link to={`/`}> <span> Já possui Cadastro ? Faça login! </span> </Link>
         </RegisterHTML>
     )
 }
@@ -82,7 +80,7 @@ const RegisterHTML = styled.main`
         border-radius: 5px;
         border: none;
         background: #52B6FF;
-        color: #FFFFFF;
+        /* color: #FFFFFF; */
     }
     span{
         font-family: 'Lexend Deca', sans-serif;

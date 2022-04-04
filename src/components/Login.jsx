@@ -19,7 +19,7 @@ export default function Login(){
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login'
         const promise = axios.post(URL, {...loginINFO})
         promise.then( (response) => {setUserINFO(response.data)
-                                     navegate('/habitos')} )
+                                     navegate('/hoje')} )
         promise.catch( (err) => console.log(err) )
     }
 
@@ -70,7 +70,7 @@ const LoginScreen = styled.main`
         border-radius: 5px;
         border: none;
         background: #52B6FF;
-        color: #FFFFFF;
+        /* color: #FFFFFF; */
     }
     span{
         font-family: 'Lexend Deca', sans-serif;
