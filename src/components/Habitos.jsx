@@ -13,10 +13,12 @@ export default function Habitos(){
 
     const {userINFO, setUserINFO} = React.useContext(usuarioINFO)
 
-    const [addHabit, setAddHabit] = React.useState(0)
+    const [addHabit, setAddHabit] = React.useState(false)
     const [newHabit, setNewHabit] = React.useState({ name: ""})
     const [listHabits, setListHabits] = React.useState([])
+    const [listDaysSelected, setListDaysSelected] = React.useState([])
     let days = []
+
     const config = {
         headers: {
             Authorization: `Bearer ${userINFO.token}`
@@ -27,57 +29,39 @@ export default function Habitos(){
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
         const promise = axios.post(URL, {name: newHabit.name,
                                          days: days}, config)
-        promise.then( (response) => { console.log('consegui postar', days)} )
+        promise.then( (response) => { console.log('consegui postar', newHabit.name, days)} )
         promise.catch( (err) => console.log(err) )
     }
-    console.log(days, newHabit.name)
 
     React.useEffect( () => {
         const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
-        promise.then( (response) => {   console.log('pegando a lista de habitos', response.data.length)
+        promise.then( (response) => {   console.log('pegando a lista de habitos', response.data)
                                         setListHabits(response.data)} )
 
         promise.catch( (err) => console.log(err))   }   ,[])
 
-    if(listHabits.length === 0 && addHabit === 0){
+    if(listHabits.length === 0){
         return(
             <HabitosHTML> 
                 <Header userImg={userINFO.image}/>
                 <main>
                     <div className="subHeader">
                         <h3>Meus hábitos</h3>
-                        <button className="add-hobby" onClick={ () => setAddHabit(1) }><p>+</p></button>
-                    </div>
-                    <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>
-                </main>
-                {/* <Footer/> */}
-            </HabitosHTML>
-        )
-    }
-    if(addHabit === 1){
-        return(
-            <HabitosHTML> 
-               <Header userImg={userINFO.image}/>
-                <main>
-                    <div className="subHeader" > 
-                        <h3>Meus hábitos</h3>
-                        <button className="add-hobby"> <p>+</p> </button>
+                        <button className="add-hobby" onClick={ () => { addHabit === false ? setAddHabit(true) : setAddHabit(false) } }><p>+</p></button>
                     </div>
 
-                    <section className="new-habit">
+                    <section className={ addHabit === false ? 'desable' : 'new-habit' } >
                         <input type="text"  value={newHabit.name}
                                             placeholder={'Qual o Novo Habito'} 
                                             onChange={ (e) => setNewHabit({...newHabit, name: e.target.value}) }/>
                         <div>
                             <button className="days" id='1' onClick={ (e) => {if(e.target.className === 'days selecionado'){
                                                                                 e.target.className = 'days'
-                                                                                // days = days.filter( day => day !== e.target.id)}
-                                                                                console.log('remover da lista')}
+                                                                                setListDaysSelected(listDaysSelected.filter( day => day !== e.target.id)) }
                                                                                 else{
                                                                                     e.target.className = 'days selecionado'
-                                                                                    // days = [...days, '1']
-                                                                                    console.log('adicionanr a lista')
-                                                                                }} }> 
+                                                                                    setListDaysSelected([...listDaysSelected, '1']) }
+                                                                                } }> 
                                 D   </button>
                             <button className="days" id='2' onClick={ (e) => {if(e.target.className === 'days selecionado'){
                                                             e.target.className = 'days'
@@ -135,11 +119,96 @@ export default function Habitos(){
                     </section>
 
                     <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>
-
+                
                 </main>
                 {/* <Footer/> */}
             </HabitosHTML>
         )
+    }
+    if(addHabit === 2){
+        // return(
+        //     <HabitosHTML> 
+        //        <Header userImg={userINFO.image}/>
+        //         <main>
+        //             <div className="subHeader" > 
+        //                 <h3>Meus hábitos</h3>
+        //                 <button className="add-hobby"> <p>+</p> </button>
+        //             </div>
+
+        //             <section className={ addHabit === 0 ? 'desable' : 'new-habit' } >
+        //                 <input type="text"  value={newHabit.name}
+        //                                     placeholder={'Qual o Novo Habito'} 
+        //                                     onChange={ (e) => setNewHabit({...newHabit, name: e.target.value}) }/>
+        //                 <div>
+        //                     <button className="days" id='1' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+        //                                                                         e.target.className = 'days'
+        //                                                                         setListDaysSelected(listDaysSelected.filter( day => day !== e.target.id)) }
+        //                                                                         else{
+        //                                                                             e.target.className = 'days selecionado'
+        //                                                                             setListDaysSelected([...listDaysSelected, '1']) }
+        //                                                                         } }> 
+        //                         D   </button>
+        //                     <button className="days" id='2' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+        //                                                     e.target.className = 'days'
+        //                                                     days = days.filter( day => day !== e.target.id)}
+        //                                                     else{
+        //                                                         e.target.className = 'days selecionado'
+        //                                                         days = [...days, '2']
+        //                                                     }} }> 
+        //                     S  </button>
+        //                     <button className="days" id='3' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+        //                                                     e.target.className = 'days'
+        //                                                     days = days.filter( day => day !== e.target.id)}
+        //                                                     else{
+        //                                                         e.target.className = 'days selecionado'
+        //                                                         days = [...days, '3']
+        //                                                     }} }> 
+        //                     T  </button>
+        //                     <button className="days" id='4' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+        //                                                     e.target.className = 'days'
+        //                                                     days = days.filter( day => day !== e.target.id)}
+        //                                                     else{
+        //                                                         e.target.className = 'days selecionado'
+        //                                                         days = [...days, '4']
+        //                                                     }} }> 
+        //                     Q  </button>
+        //                     <button className="days" id='5' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+        //                                                     e.target.className = 'days'
+        //                                                     days = days.filter( day => day !== e.target.id)}
+        //                                                     else{
+        //                                                         e.target.className = 'days selecionado'
+        //                                                         days = [...days, '5']
+        //                                                     }} }> 
+        //                     Q  </button>
+        //                     <button className="days" id='6' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+        //                                                     e.target.className = 'days'
+        //                                                     days = days.filter( day => day !== e.target.id)}
+        //                                                     else{
+        //                                                         e.target.className = 'days selecionado'
+        //                                                         days = [...days, '6']
+        //                                                     }} }> 
+        //                     S  </button>
+        //                     <button className="days" id='7' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+        //                                                     e.target.className = 'days'
+        //                                                     days = days.filter( day => day !== e.target.id)}
+        //                                                     else{
+        //                                                         e.target.className = 'days selecionado'
+        //                                                         days = [...days, '7']
+        //                                                     }} }> 
+        //                     S  </button>
+        //                 </div>
+        //                 <div className="complete-hobby">
+        //                     <button onClick={() => setAddHabit(0)} className="cancel"> <p>Cancelar</p> </button>
+        //                     <button onClick={ () => postNewHabit()} className="save"> <p>Salvar</p> </button>
+        //                 </div>
+        //             </section>
+
+        //             <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>
+
+        //         </main>
+        //         <Footer/>
+        //     </HabitosHTML>
+        // )
     }
     else{
         return(
@@ -148,8 +217,75 @@ export default function Habitos(){
                 <main>
                     <div className="subHeader">
                         <h3>Meus hábitos</h3>
-                        <button className="add-hobby" onClick={ () => setAddHabit(1) }><p>+</p></button>
+                        <button className="add-hobby" onClick={ () => { addHabit === false ? setAddHabit(true) : setAddHabit(false) } }><p>+</p></button>
                     </div>
+                    <section className={ addHabit === false ? 'desable' : 'new-habit' } >
+                        <input type="text"  value={newHabit.name}
+                                            placeholder={'Qual o Novo Habito'} 
+                                            onChange={ (e) => setNewHabit({...newHabit, name: e.target.value}) }/>
+                        <div>
+                            <button className="days" id='1' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                                                e.target.className = 'days'
+                                                                                setListDaysSelected(listDaysSelected.filter( day => day !== e.target.id)) }
+                                                                                else{
+                                                                                    e.target.className = 'days selecionado'
+                                                                                    setListDaysSelected([...listDaysSelected, '1']) }
+                                                                                } }> 
+                                D   </button>
+                            <button className="days" id='2' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '2']
+                                                            }} }> 
+                            S  </button>
+                            <button className="days" id='3' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '3']
+                                                            }} }> 
+                            T  </button>
+                            <button className="days" id='4' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '4']
+                                                            }} }> 
+                            Q  </button>
+                            <button className="days" id='5' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '5']
+                                                            }} }> 
+                            Q  </button>
+                            <button className="days" id='6' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '6']
+                                                            }} }> 
+                            S  </button>
+                            <button className="days" id='7' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '7']
+                                                            }} }> 
+                            S  </button>
+                        </div>
+                        <div className="complete-hobby">
+                            <button onClick={() => setAddHabit(0)} className="cancel"> <p>Cancelar</p> </button>
+                            <button onClick={ () => postNewHabit()} className="save"> <p>Salvar</p> </button>
+                        </div>
+                    </section>
                     <div className="list-habits">
                         {listHabits.map( habit => <Habit    habitName={habit.name}
                                                             listWeekDays={habit.days} /> )}
@@ -279,9 +415,6 @@ const HabitosHTML = styled.div`
         color: #52B6FF;
 
     }
-    button .selecionado{
-        background-color: red;
-    }
     .days{
         font-family: 'Lexend Deca', sans-serif;
         display: flex;
@@ -297,5 +430,12 @@ const HabitosHTML = styled.div`
         border: 1px solid #D4D4D4;
         color: #DBDBDB;
         margin-bottom: 55px;
+    }
+    .selecionado{
+        background: #CFCFCF;
+        color: #fff
+    }
+    .desable{
+        display: none;
     }
 `;
