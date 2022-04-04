@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import vetor from '../images/Vector.png';
 
 export default function HabitToday(props){
 
@@ -9,15 +10,21 @@ export default function HabitToday(props){
 
     }
     return(
-        <HabitTodayHTML>
+        <HabitTodayHTML id={props.id}>
             <div className="infor">
                 <h1 className="name">{props.name}</h1>
                 <p>Sequência atual: {props.currentSequence} dias</p>
                 <p>Maior sequência: {props.highestSequence} dias</p>
             </div>
-            <button className={ done === false ? '' : 'done' }>
-                <ion-icon className='icone' name="checkmark-outline" size='large'></ion-icon>
-            </button>              
+            <div className="referencia">
+                <button className={ done === false ? '' : 'done' }
+                        onClick={(e) => {if(e.target.className === ''){
+                                        e.target.className = 'done' }
+                                        else{
+                                        e.target.className = ''}    } }>
+                </button>
+                <img className="imagem" src={vetor} alt="" />
+            </div>              
         </HabitTodayHTML>
     )
 }
@@ -56,12 +63,17 @@ const HabitTodayHTML = styled.div`
             background: #EBEBEB;
             border: 1px solid #E7E7E7
         }
-        .icone{
-            width: 35.09px;
-            height: 28px;
-            color : #FFFFFF;
-        }
         .done{
-            background-color: green;
+            background-color: #8FC549;
+        }
+        .referencia{
+            position: relative;
+        }
+        .imagem{
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            position: absolute;
+            background-color: none;
         }
 `;

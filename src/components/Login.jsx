@@ -5,6 +5,7 @@ import axios from "axios"
 import "../styles/reset.css"
 import { ThreeDots } from "react-loader-spinner"
 import usuarioINFO from "../contexts/userINFO"
+import imagem from "../images/Group8.png"
 
 export default function Login(){
 
@@ -27,7 +28,7 @@ export default function Login(){
 
     return(
         <LoginScreen>
-            <img src="../images/Group8.png" alt="" />
+            <img src={imagem} alt="" />
             <form onSubmit={loginEnter}>
                 <input type="email"  value={loginINFO.email} 
                                      placeholder={'Email'} 

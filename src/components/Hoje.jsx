@@ -12,6 +12,8 @@ export default function Hoje(){
 
     const {userINFO, setUserINFO} = React.useContext(usuarioINFO)
     const [listHabitsToday, setListHabitsToday] = React.useState([])
+    const [totalID, setTotalID] = React.useState([])
+
     const config = {
         headers: {
             Authorization: `Bearer ${userINFO.token}`
@@ -38,7 +40,8 @@ export default function Hoje(){
                 {listHabitsToday.map( habit => <HabitToday  name={habit.name}
                                                             currentSequence={habit.currentSequence}
                                                             highestSequence={habit.highestSequence}
-                                                            done={habit.done}/>)}
+                                                            done={habit.done}
+                                                            id={habit.id}/>)}
             </div>
             <Footer/>
         </HojeHTML>
@@ -81,4 +84,7 @@ const HojeHTML = styled.div`
         line-height: 22px;
         color: #BABABA;
     }
+    .done{
+            background-color: #8FC549;
+        }
 `;

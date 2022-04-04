@@ -222,7 +222,7 @@ const HabitosHTML = styled.div`
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 100%;
+    height: 100vh;
     padding: 70px 0 70px 0;
     background: #E5E5E5;
     main{
@@ -237,6 +237,7 @@ const HabitosHTML = styled.div`
         flex-direction: column;
         width: 100%;
         margin-bottom: 60px;
+        background: #E5E5E5;
     }
     .subHeader{
         display: flex;
