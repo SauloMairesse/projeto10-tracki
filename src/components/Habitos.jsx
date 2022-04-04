@@ -9,8 +9,6 @@ import usuarioINFO from "../contexts/userINFO"
 export default function Habitos(){
 
     const {userINFO, setUserINFO} = React.useContext(usuarioINFO)
-    
-    console.log(userINFO)
 
     const [addHabit, setAddHabit] = React.useState(0)
     const [newHabit, setNewHabit] = React.useState({ name: ""})
