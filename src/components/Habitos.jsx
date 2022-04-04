@@ -3,8 +3,11 @@ import styled from "styled-components"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 import axios from "axios"
-import { useContext } from "react"
 import usuarioINFO from "../contexts/userINFO"
+import Header from "./Header"
+import Footer from "./Footer"
+import Habit from "./Habit"
+
 
 export default function Habitos(){
 
@@ -12,8 +15,8 @@ export default function Habitos(){
 
     const [addHabit, setAddHabit] = React.useState(0)
     const [newHabit, setNewHabit] = React.useState({ name: ""})
+    const [listHabits, setListHabits] = React.useState([])
     let days = []
-
     const config = {
         headers: {
             Authorization: `Bearer ${userINFO.token}`
@@ -27,18 +30,19 @@ export default function Habitos(){
         promise.then( (response) => { console.log('consegui postar', days)} )
         promise.catch( (err) => console.log(err) )
     }
+    console.log(days, newHabit.name)
 
-    const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
-    promise.then( (response) => { console.log('pegando a lista de habitos', response.data)} )
-    promise.catch( (err) => console.log(err) )    
+    React.useEffect( () => {
+        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
+        promise.then( (response) => {   console.log('pegando a lista de habitos', response.data.length)
+                                        setListHabits(response.data)} )
 
-    if(addHabit === 0 ){
+        promise.catch( (err) => console.log(err))   }   ,[])
+
+    if(listHabits.length === 0 && addHabit === 0){
         return(
             <HabitosHTML> 
-                <header>
-                    <h1>teste</h1>
-                    <img src={userINFO.image} alt="" />
-                </header>
+                <Header userImg={userINFO.image}/>
                 <main>
                     <div className="subHeader">
                         <h3>Meus hábitos</h3>
@@ -46,21 +50,14 @@ export default function Habitos(){
                     </div>
                     <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>
                 </main>
-                <footer>
-                    <h4> Hábitos </h4>
-                    <h5> Histórico</h5>
-                </footer>
+                {/* <Footer/> */}
             </HabitosHTML>
         )
     }
-
     if(addHabit === 1){
         return(
             <HabitosHTML> 
-                <header>
-                    <h1>teste</h1>
-                    <img src={userINFO.image} alt="" />
-                </header>
+               <Header userImg={userINFO.image}/>
                 <main>
                     <div className="subHeader" > 
                         <h3>Meus hábitos</h3>
@@ -73,12 +70,14 @@ export default function Habitos(){
                                             onChange={ (e) => setNewHabit({...newHabit, name: e.target.value}) }/>
                         <div>
                             <button className="days" id='1' onClick={ (e) => {if(e.target.className === 'days selecionado'){
-                                                                e.target.className = 'days'
-                                                                days = days.filter( day => day !== e.target.id)}
-                                                                else{
-                                                                    e.target.className = 'days selecionado'
-                                                                    days = [...days, '1']
-                                                                }} }> 
+                                                                                e.target.className = 'days'
+                                                                                // days = days.filter( day => day !== e.target.id)}
+                                                                                console.log('remover da lista')}
+                                                                                else{
+                                                                                    e.target.className = 'days selecionado'
+                                                                                    // days = [...days, '1']
+                                                                                    console.log('adicionanr a lista')
+                                                                                }} }> 
                                 D   </button>
                             <button className="days" id='2' onClick={ (e) => {if(e.target.className === 'days selecionado'){
                                                             e.target.className = 'days'
@@ -138,10 +137,25 @@ export default function Habitos(){
                     <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>
 
                 </main>
-                {/* <footer>
-                    <h4> Hábitos </h4>
-                    <h5> Histórico</h5>
-                </footer> */}
+                {/* <Footer/> */}
+            </HabitosHTML>
+        )
+    }
+    else{
+        return(
+            <HabitosHTML> 
+                <Header userImg={userINFO.image}/>
+                <main>
+                    <div className="subHeader">
+                        <h3>Meus hábitos</h3>
+                        <button className="add-hobby" onClick={ () => setAddHabit(1) }><p>+</p></button>
+                    </div>
+                    <div className="list-habits">
+                        {listHabits.map( habit => <Habit    habitName={habit.name}
+                                                            listWeekDays={habit.days} /> )}
+                    </div>
+                </main>
+                {/* <Footer/> */}
             </HabitosHTML>
         )
     }
@@ -153,23 +167,12 @@ const HabitosHTML = styled.div`
     background: #F2F2F2;
     width: 100%;
     height: 100vh;
-
-    img{
-        width: 51px;
-        height: 51px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    header{
-        display: flex;
-        height: 60px;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 10px 0 10px;
-        background: #126BA5;
-    }
     main{
         padding: 0 18px 0 18px;
+    }
+    .list-habits{
+        display: flex;
+        flex-direction: column;
     }
     .subHeader{
         display: flex;
@@ -177,15 +180,6 @@ const HabitosHTML = styled.div`
         justify-content: space-between;
         align-items: center;
         padding: 0 10px 0 10px;
-    }
-    span{
-        font-family: 'Lexend Deca', sans-serif;
-        font-size: 18px;
-        font-weight: 400;
-        line-height: 22px;
-        letter-spacing: 0em;
-        text-align: left;
-        color: #666666;
     }
     .add-hobby{
         display: flex;
@@ -197,6 +191,24 @@ const HabitosHTML = styled.div`
         background: #52B6FF;
         padding-bottom: 4px;
     }
+    span{
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #666666;
+    }
+    
+    .new-habit{
+        height: 180px;
+        background: #FFFFFF;
+        border-radius: 5px;
+        padding: 10px 10px 10px 10px;
+        margin: 10px 0 10px ;
+    }
+
     p{
         font-family: 'Lexend Deca', sans-serif;
         font-size: 27px;
@@ -214,13 +226,6 @@ const HabitosHTML = styled.div`
         line-height: 29px;
         color: #126BA5;
     }
-    footer{
-        position: fixed;
-        bottom: 0;
-        background-color: greenyellow;
-        width: 100vw;
-        height: 100px;
-    }
     input{
         width: 303px;
         height: 45px;
@@ -236,36 +241,6 @@ const HabitosHTML = styled.div`
     }
     div{
         display: flex;
-    }
-    article:hover {
-        cursor: pointer;
-    }
-    .new-habit{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 10px 10px 10px;
-        width: 340px;
-        height: 180px;
-        background: #FFFFFF;
-        border-radius: 5px;
-        margin-bottom: 30px;
-    }
-    .days{
-        font-family: 'Lexend Deca', sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        margin-right: 5px;
-        box-sizing: border-box;
-        border-radius: 5px;
-        border-color: #8e8e8e;
-        background-color: #FFFFFF;
-        border: 1px solid #D4D4D4;
-        color: #DBDBDB;
-        margin-bottom: 55px;
     }
     .complete-hobby{
         display: flex;
@@ -304,7 +279,23 @@ const HabitosHTML = styled.div`
         color: #52B6FF;
 
     }
-    .selecionado{
-        background: #CFCFCF;
+    button .selecionado{
+        background-color: red;
+    }
+    .days{
+        font-family: 'Lexend Deca', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border-color: #8e8e8e;
+        background-color: #FFFFFF;
+        border: 1px solid #D4D4D4;
+        color: #DBDBDB;
+        margin-bottom: 55px;
     }
 `;
