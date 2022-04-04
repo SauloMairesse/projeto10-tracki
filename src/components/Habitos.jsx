@@ -218,8 +218,7 @@ const HabitosHTML = styled.div`
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 100vh;
-    margin: 70px 0 70px 0;
+    padding: 70px 0 100px 0;
     background: #E5E5E5;
     main{
         padding: 0 10px 0 10px;
@@ -263,8 +262,6 @@ const HabitosHTML = styled.div`
     }
 
     .new-habit{
-        width: 330px;
-        height: 180px;
         background: #FFFFFF;
         border-radius: 5px;
         padding: 10px 10px 10px 10px;
@@ -307,6 +304,7 @@ const HabitosHTML = styled.div`
         display: flex;
         width: 100%;
         justify-content: flex-end;
+        margin-top: 30px;
     }
     .save{
         display: flex;

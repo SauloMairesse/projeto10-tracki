@@ -3,7 +3,7 @@ import styled from "styled-components"
 export default function Header(props){
     return(
         <HeaderHTML>
-                    <h1>Nome Site</h1>
+                    <h1 className="nameSite">Nome Site</h1>
                     <img src={props.userImg} alt="" />
         </HeaderHTML>
     )
@@ -19,6 +19,7 @@ const HeaderHTML = styled.header`
         justify-content: space-between;
         background: #126BA5;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+        z-index: 1;
     img{
         display: flex;
         width: 51px;
@@ -26,7 +27,8 @@ const HeaderHTML = styled.header`
         border-radius: 50%;
         margin-right: 20px;
     } 
-    h1{
+    .nameSite{
+        color: #fff;
         margin-left: 20px;
     }  
 `;

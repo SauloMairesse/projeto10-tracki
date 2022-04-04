@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import axios from "axios"
-
+import dayjs from 'dayjs'
 import Header from "./Header"
 import usuarioINFO from "../contexts/userINFO"
 import HabitToday from "./HabitToday"
@@ -11,13 +11,15 @@ export default function Hoje(){
 
     const {userINFO, setUserINFO} = React.useContext(usuarioINFO)
     const [listHabitsToday, setListHabitsToday] = React.useState([])
-
     const config = {
         headers: {
             Authorization: `Bearer ${userINFO.token}`
         }
     }
-
+    var dayjs = require('dayjs')
+    //import dayjs from 'dayjs' // ES 2015
+    dayjs().format()
+    
     React.useEffect( () => {
         const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config)
         promise.then( (response) => {   console.log('habitos Hoje') 
@@ -29,7 +31,7 @@ export default function Hoje(){
         <HojeHTML>
             <Header userImg={userINFO.image}/>
             <div className="subHeader">
-                <h1>Dia Da Semana</h1>
+                <h1>{dayjs}</h1>
                 <h2>Nenhum hábito concluído ainda</h2>
             </div>
 
@@ -49,6 +51,7 @@ const HojeHTML = styled.div`
     width: 100%;
     height: 100vh;
     padding-top: 100px;
+    padding-bottom: 100%;
     .subHeader{
         display: flex;
         flex-direction: column;

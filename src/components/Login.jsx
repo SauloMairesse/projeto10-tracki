@@ -3,24 +3,26 @@ import { Link, useNavigate, useParams }  from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios"
 import "../styles/reset.css"
-
+import { ThreeDots } from "react-loader-spinner"
 import usuarioINFO from "../contexts/userINFO"
 
 export default function Login(){
 
     const { userINFO, setUserINFO } = React.useContext(usuarioINFO);
 
-    const navegate = useNavigate();
-    
+    const navigate = useNavigate();
+    const [loading, setLoading] = React.useState(false)
     const [loginINFO, setLoginINFO] = React.useState({  email: '',
                                                         password: ''})     
     function loginEnter(event){
         event.preventDefault();
+        setLoading(true)
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login'
         const promise = axios.post(URL, {...loginINFO})
         promise.then( (response) => {setUserINFO(response.data)
-                                     navegate('/hoje')} )
-        promise.catch( (err) => console.log(err) )
+                                     navigate('/hoje')} )
+        promise.catch( (err) => {alert("Ocorreu um erro. Recarregue a página e tente novamente")
+                                setLoading(false)} )
     }
 
     return(
@@ -33,7 +35,8 @@ export default function Login(){
                 <input type="password"  value={loginINFO.password} 
                                         placeholder={'Senha'} 
                                         onChange={ (e) => setLoginINFO({...loginINFO, password: e.target.value}) } />
-                <button> Entrar </button>
+                                        
+               <button type="submit">{loading ? <ThreeDots color="#fff" height={13}/>  : <>Entrar</>}</button>
             </form>
             <Link to={`/cadastro`}> <span> Ainda não possui Cadastro ? Cadastre-se </span> </Link>
         </LoginScreen>
@@ -64,6 +67,9 @@ const LoginScreen = styled.main`
         border: 1px solid #D4D4D4
     }
     button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-family: 'Lexend Deca', sans-serif;
         height: 45px;
         width: 303px;
