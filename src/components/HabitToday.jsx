@@ -5,8 +5,6 @@ export default function HabitToday(props){
 
     const [done, setDone] = React.useState(props.done)
 
-    console.log(done)
-
     function checkHabit(){
 
     }

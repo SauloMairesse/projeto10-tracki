@@ -5,8 +5,6 @@ export default function Habit(props){
     const days = [['D',1],['S',2],['T',3],['Q',4],['Q',5],['S',6],['S',7]]
     const listWeekDays = props.listWeekDays
     
-    // console.log(listWeekDays)
-    
     function Day(props){
         return (
             <button className={props.className} id='1' > {props.day} </button>
@@ -16,8 +14,7 @@ return(
     <HabitHTML>
         <h1>{props.habitName}</h1>
         <div className="teste">
-            {days.map( (day) => { console.log(listWeekDays, day)
-                                if( listWeekDays.includes(day[1]) ){
+            {days.map( (day) => { if( listWeekDays.includes(day[1]) ){
                                     return(
                                         <Day    className='days selecionado'
                                                 day={day[0]} /> )}   

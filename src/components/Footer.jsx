@@ -7,10 +7,17 @@ export default function Footer(){
 
     return(
         <FooterHTML>
-            <h1 className="footerH1"
-                    onClick={() => navegate('/habitos')} > Hábitos </h1>
-            <div>hoje</div>
-            <h1 className="footerH1"> Histórico</h1>
+            <h1     className="footerH1"
+                    onClick={() => navegate('/habitos')} > 
+                Hábitos 
+            </h1>
+            <div    onClick={() => navegate('/hoje')}>
+                hoje
+            </div>
+            <h1     className="footerH1"
+                    onClick={() => navegate('/historico')}> 
+                Histórico
+            </h1>
         </FooterHTML>
     )
 }

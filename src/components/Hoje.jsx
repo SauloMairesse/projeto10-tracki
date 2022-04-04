@@ -6,6 +6,7 @@ import Header from "./Header"
 import usuarioINFO from "../contexts/userINFO"
 import HabitToday from "./HabitToday"
 import Footer from "./Footer"
+import "../styles/style.css"
 
 export default function Hoje(){
 
@@ -18,12 +19,11 @@ export default function Hoje(){
     }
     var dayjs = require('dayjs')
     //import dayjs from 'dayjs' // ES 2015
-    dayjs().format()
-    
+    let a = dayjs().format('LLLL')
+
     React.useEffect( () => {
         const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config)
-        promise.then( (response) => {   console.log('habitos Hoje') 
-                                        setListHabitsToday(response.data)} )
+        promise.then( (response) => { setListHabitsToday(response.data)} )
 
         promise.catch( (err) => console.log(err))   }   ,[])
 
@@ -31,14 +31,15 @@ export default function Hoje(){
         <HojeHTML>
             <Header userImg={userINFO.image}/>
             <div className="subHeader">
-                <h1>{dayjs}</h1>
+                <h1>Segunda, 23/01</h1>
                 <h2>Nenhum hábito concluído ainda</h2>
             </div>
-
-            {listHabitsToday.map( habit => <HabitToday  name={habit.name}
-                                                        currentSequence={habit.currentSequence}
-                                                        highestSequence={habit.highestSequence}
-                                                        done={habit.done}/>)}
+            <div className="corfundo">
+                {listHabitsToday.map( habit => <HabitToday  name={habit.name}
+                                                            currentSequence={habit.currentSequence}
+                                                            highestSequence={habit.highestSequence}
+                                                            done={habit.done}/>)}
+            </div>
             <Footer/>
         </HojeHTML>
     )
@@ -47,11 +48,14 @@ export default function Hoje(){
 const HojeHTML = styled.div`
     display: flex;
     flex-direction:  column;
-    background: #E5E5E5;
     width: 100%;
     height: 100vh;
     padding-top: 100px;
-    padding-bottom: 100%;
+    background: #E5E5E5;
+    .corfundo{
+        background-color: #E5E5E5;
+        padding-bottom: 100px;
+    }
     .subHeader{
         display: flex;
         flex-direction: column;

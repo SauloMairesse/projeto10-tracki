@@ -7,7 +7,7 @@ import usuarioINFO from "../contexts/userINFO"
 import Header from "./Header"
 import Footer from "./Footer"
 import Habit from "./Habit"
-
+import "../styles/style.css"
 
 export default function Habitos(){
 
@@ -17,8 +17,6 @@ export default function Habitos(){
     const [newHabit, setNewHabit] = React.useState({ name: ""})
     const [listHabits, setListHabits] = React.useState([])
     const [listDaysSelected, setListDaysSelected] = React.useState([])
-
-    console.log(newHabit.name, listDaysSelected)
 
     const config = {
         headers: {
@@ -30,17 +28,19 @@ export default function Habitos(){
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
         const promise = axios.post(URL, {name: newHabit.name,
                                          days: listDaysSelected}, config)
-        promise.then( (response) => {   console.log('consegui postar') 
-                                        setListHabits(listHabits)} )
+        promise.then( (response) => {setListHabits(listHabits)} )
         promise.catch( (err) => console.log(err) )
     }
 
     React.useEffect( () => {
         const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
-        promise.then( (response) => {   console.log('pegando a lista de habitos', response.data)
-                                        setListHabits(response.data)} )
-
+        promise.then( (response) => { setListHabits(response.data)} )
         promise.catch( (err) => console.log(err))   }   ,[])
+
+    function requestListHabits(){
+            const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
+            promise.then( (response) => {setListHabits(response.data)} )
+            promise.catch( (err) => console.log(err))   }
 
     if(listHabits.length === 0){
         return(
@@ -116,7 +116,9 @@ export default function Habitos(){
                         </div>
                         <div className="complete-hobby">
                             <button onClick={() => setAddHabit(false)} className="cancel"> <p>Cancelar</p> </button>
-                            <button onClick={ () => postNewHabit()} className="save"> <p>Salvar</p> </button>
+                            <button onClick={ () => {postNewHabit()
+                                                    requestListHabits() 
+                                                    setAddHabit(false) } } className="save"> <p>Salvar</p> </button>
                         </div>
                     </section>
 
@@ -200,7 +202,9 @@ export default function Habitos(){
                         </div>
                         <div className="complete-hobby">
                             <button onClick={() => setAddHabit(false)} className="cancel"> <p>Cancelar</p> </button>
-                            <button onClick={ () => postNewHabit()} className="save"> <p>Salvar</p> </button>
+                            <button onClick={ () => {postNewHabit() 
+                                                    requestListHabits()
+                                                    setAddHabit(false)  } } className="save"> <p>Salvar</p> </button>
                         </div>
                     </section>
                     <div className="list-habits">
@@ -218,7 +222,8 @@ const HabitosHTML = styled.div`
     display: flex;
     flex-direction: column;
     width: 100vw;
-    padding: 70px 0 100px 0;
+    height: 100%;
+    padding: 70px 0 70px 0;
     background: #E5E5E5;
     main{
         padding: 0 10px 0 10px;
@@ -265,7 +270,7 @@ const HabitosHTML = styled.div`
         background: #FFFFFF;
         border-radius: 5px;
         padding: 10px 10px 10px 10px;
-        margin: 10px 0 10px ;
+        margin: 10px 0 30px 0 ;
     }
     p{
         font-family: 'Lexend Deca', sans-serif;

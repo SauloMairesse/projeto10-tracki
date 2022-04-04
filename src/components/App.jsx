@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components"
-
+import Historico from "./HIstorico";
 import Login from "./Login";
 import Cadastro from "./Cadastro";
 import Habitos from "./Habitos";
@@ -22,6 +22,7 @@ export default function App(){
                     <Route path="/cadastro" element={<Cadastro/>} />
                     <Route path="/hoje" element={<Hoje/>} />
                     <Route path="/habitos" element={<Habitos/>} />
+                    <Route path="/historico" element={<Historico/>} />
                 </Routes>
             </BrowserRouter>
         </usuarioINFO.Provider>
