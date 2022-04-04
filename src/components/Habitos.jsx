@@ -2,24 +2,41 @@ import React from "react"
 import styled from "styled-components"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
+import axios from "axios"
 import { useContext } from "react"
-import userINFO from "../contexts/userINFO"
+import usuarioINFO from "../contexts/userINFO"
 
 export default function Habitos(){
 
+    const {userINFO, setUserINFO} = React.useContext(usuarioINFO)
+    
+    console.log(userINFO)
 
     const [addHabit, setAddHabit] = React.useState(0)
     const [newHabit, setNewHabit] = React.useState({ name: ""})
     let days = []
 
-    // const {data} = useContext(userINFO)
+    const config = {
+        headers: {
+            Authorization: `Bearer ${userINFO.token}`
+        }
+    }
+
+    function postNewHabit(event){
+        const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
+        const promise = axios.post(URL, {name: newHabit.name,
+                                         days: days}, config)
+        promise.then( (response) => { console.log('consegui postar')} )
+        promise.catch( (err) => console.log(err) )
+    }
+
 
     if(addHabit === 0 ){
         return(
             <HabitosHTML> 
                 <header>
                     <h1>teste</h1>
-                    <h2>imagem</h2>
+                    <img src={userINFO.image} alt="" />
                 </header>
                 <main>
                     <div className="subHeader">
@@ -41,7 +58,7 @@ export default function Habitos(){
             <HabitosHTML> 
                 <header>
                     <h1>teste</h1>
-                    <h2>imagem</h2>
+                    <img src={userINFO.image} alt="" />
                 </header>
                 <main>
                     <div className="subHeader" > 
@@ -114,7 +131,7 @@ export default function Habitos(){
                         </div>
                         <div className="complete-hobby">
                             <button onClick={() => setAddHabit(0)} className="cancel"> <p>Cancelar</p> </button>
-                            <button className="save"> <p>Salvar</p> </button>
+                            <button onClick={ () => postNewHabit()} className="save"> <p>Salvar</p> </button>
                         </div>
                     </section>
 
@@ -128,6 +145,26 @@ export default function Habitos(){
             </HabitosHTML>
         )
     }
+
+    if(addHabit === 2){
+        <HabitosHTML> 
+        <header>
+            <h1>teste</h1>
+            <img src={userINFO.image} alt="" />
+        </header>
+        <main>
+            <div className="subHeader" > 
+                <h3>Meus hábitos</h3>
+                <button className="add-hobby"> <p>+</p> </button>
+            </div>
+            
+        </main>
+        {/* <footer>
+            <h4> Hábitos </h4>
+            <h5> Histórico</h5>
+        </footer> */}
+    </HabitosHTML>
+    }
 }
 
 const HabitosHTML = styled.div`
@@ -137,6 +174,12 @@ const HabitosHTML = styled.div`
     width: 100%;
     height: 100vh;
 
+    img{
+        width: 51px;
+        height: 51px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
     header{
         display: flex;
         height: 60px;
@@ -205,8 +248,11 @@ const HabitosHTML = styled.div`
         box-sizing: border-box;
         border-radius: 5px;
         border: 1px solid #D4D4D4;
-        color: #DBDBDB;
+        color: #000;
         margin-bottom: 8px;
+    }
+    input::placeholder{
+        color: #8e8e8e;
     }
     div{
         display: flex;

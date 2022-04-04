@@ -6,13 +6,15 @@ import Login from "./Login";
 import Cadastro from "./Cadastro";
 import Habitos from "./Habitos";
 
-import { UseContext } from "react";
-import userINFO from "../contexts/userINFO";
+import { useContext} from "react";
+import usuarioINFO from "./../contexts/userINFO";
 
 export default function App(){
+
+    const [userINFO, setUserINFO] = React.useState({}) 
     
     return(
-        // <UseContext.Provider value={ {loginINFO, setLoginINFO} }>
+        <usuarioINFO.Provider value={{userINFO, setUserINFO}}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Login />} />
@@ -20,6 +22,6 @@ export default function App(){
                     <Route path="/habitos" element={<Habitos/>} />
                 </Routes>
             </BrowserRouter>
-        // </UseContext.Provider>
+        </usuarioINFO.Provider>
     )
 }
