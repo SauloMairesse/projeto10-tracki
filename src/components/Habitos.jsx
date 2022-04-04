@@ -12,8 +12,7 @@ export default function Habitos(){
     const [newHabit, setNewHabit] = React.useState({ name: ""})
     let days = []
 
-    const {data} = useContext(userINFO)
-    console.log(data)
+    // const {data} = useContext(userINFO)
 
     if(addHabit === 0 ){
         return(
@@ -23,10 +22,10 @@ export default function Habitos(){
                     <h2>imagem</h2>
                 </header>
                 <main>
-                    <section>
+                    <div className="subHeader">
                         <h3>Meus hábitos</h3>
-                        <button className="add" onClick={ () => setAddHabit(1) }><p>+</p></button>
-                    </section>
+                        <button className="add-hobby" onClick={ () => setAddHabit(1) }><p>+</p></button>
+                    </div>
                     <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>
                 </main>
                 <footer>
@@ -45,16 +44,15 @@ export default function Habitos(){
                     <h2>imagem</h2>
                 </header>
                 <main>
-                    <section>
+                    <div className="subHeader" > 
                         <h3>Meus hábitos</h3>
-                        <button className="add"> <p>+</p> </button>
-                    </section>
-                    <section className="new-habit">
+                        <button className="add-hobby"> <p>+</p> </button>
+                    </div>
 
+                    <section className="new-habit">
                         <input type="text"  value={newHabit.name}
                                             placeholder={'Qual o Novo Habito'} 
                                             onChange={ (e) => setNewHabit({...newHabit, name: e.target.value}) }/>
-
                         <div>
                             <button className="days" id='1' onClick={ (e) => {if(e.target.className === 'days selecionado'){
                                                                 e.target.className = 'days'
@@ -73,25 +71,60 @@ export default function Habitos(){
                                                                 days = [...days, '2']
                                                             }} }> 
                             S  </button>
-                            <button className="days" id='3' >S</button>
-                            <button className="days" id='4' >T</button>
-                            <button className="days" id='5' >Q</button>
-                            <button className="days" id='6' >Q</button>
-                            <button className="days" id='7' >S</button>
+                            <button className="days" id='3' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '3']
+                                                            }} }> 
+                            T  </button>
+                            <button className="days" id='4' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '4']
+                                                            }} }> 
+                            Q  </button>
+                            <button className="days" id='5' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '5']
+                                                            }} }> 
+                            Q  </button>
+                            <button className="days" id='6' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '6']
+                                                            }} }> 
+                            S  </button>
+                            <button className="days" id='7' onClick={ (e) => {if(e.target.className === 'days selecionado'){
+                                                            e.target.className = 'days'
+                                                            days = days.filter( day => day !== e.target.id)}
+                                                            else{
+                                                                e.target.className = 'days selecionado'
+                                                                days = [...days, '7']
+                                                            }} }> 
+                            S  </button>
                         </div>
-
-                        <div>
-                            <button className="add"> <p>Salvar</p> </button>
-                            <button className="add"> <p>Cancelar</p> </button>
+                        <div className="complete-hobby">
+                            <button onClick={() => setAddHabit(0)} className="cancel"> <p>Cancelar</p> </button>
+                            <button className="save"> <p>Salvar</p> </button>
                         </div>
-
                     </section>
 
+                    <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>
+
                 </main>
-                <footer>
+                {/* <footer>
                     <h4> Hábitos </h4>
                     <h5> Histórico</h5>
-                </footer>
+                </footer> */}
             </HabitosHTML>
         )
     }
@@ -115,13 +148,12 @@ const HabitosHTML = styled.div`
     main{
         padding: 0 18px 0 18px;
     }
-    section{
+    .subHeader{
         display: flex;
         height: 90px;
         justify-content: space-between;
         align-items: center;
         padding: 0 10px 0 10px;
-        /* background: #E5E5E5;     */
     }
     span{
         font-family: 'Lexend Deca', sans-serif;
@@ -132,7 +164,7 @@ const HabitosHTML = styled.div`
         text-align: left;
         color: #666666;
     }
-    .add{
+    .add-hobby{
         display: flex;
         border: none;
         width: 40px;
@@ -170,10 +202,11 @@ const HabitosHTML = styled.div`
         width: 303px;
         height: 45px;
         background: #FFFFFF;
-        border: 1px solid #D5D5D5;
         box-sizing: border-box;
         border-radius: 5px;
-        border-color: #8e8e8e;
+        border: 1px solid #D4D4D4;
+        color: #DBDBDB;
+        margin-bottom: 8px;
     }
     div{
         display: flex;
@@ -186,7 +219,11 @@ const HabitosHTML = styled.div`
         flex-direction: column;
         align-items: flex-start;
         padding: 10px 10px 10px 10px;
-        background-color: #fff;
+        width: 340px;
+        height: 180px;
+        background: #FFFFFF;
+        border-radius: 5px;
+        margin-bottom: 30px;
     }
     .days{
         font-family: 'Lexend Deca', sans-serif;
@@ -195,15 +232,53 @@ const HabitosHTML = styled.div`
         justify-content: center;
         width: 30px;
         height: 30px;
-        border: 1px solid #D5D5D5;
+        margin-right: 5px;
         box-sizing: border-box;
         border-radius: 5px;
         border-color: #8e8e8e;
-        margin-right: 5px;
         background-color: #FFFFFF;
+        border: 1px solid #D4D4D4;
+        color: #DBDBDB;
+        margin-bottom: 55px;
+    }
+    .complete-hobby{
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .save{
+        display: flex;
+        border: none;
+        height: 35px;
+        width: 84px;
+        justify-content: center;
+        align-items: center;
+        background: #52B6FF;
+        padding-bottom: 4px;
+        border-radius: 4.63636px;
+        margin-left: 20px;
+    }
+    .save p{
+        font-size: 15.976px;
+        color: #fff;
+    }
+    .cancel{
+        display: flex;
+        border: none;
+        height: 35px;
+        width: 100px;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        padding-bottom: 4px;
+        border-radius: 4.63636px;
+    }
+    .cancel p {
+        font-size: 15.976px;
+        color: #52B6FF;
+
     }
     .selecionado{
-        background-color:  red;
+        background: #CFCFCF;
     }
-    
 `;
