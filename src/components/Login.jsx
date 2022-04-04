@@ -11,9 +11,9 @@ export default function Login(){
     const { userINFO, setUserINFO } = React.useContext(usuarioINFO);
 
     const navegate = useNavigate();
+    
     const [loginINFO, setLoginINFO] = React.useState({  email: '',
                                                         password: ''})     
-
     function loginEnter(event){
         event.preventDefault();
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login'

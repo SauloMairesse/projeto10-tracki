@@ -15,7 +15,7 @@ export default function Habit(props){
 return(
     <HabitHTML>
         <h1>{props.habitName}</h1>
-        <div>
+        <div className="teste">
             {days.map( (day) => { console.log(listWeekDays, day)
                                 if( listWeekDays.includes(day[1]) ){
                                     return(
@@ -37,8 +37,6 @@ const HabitHTML = styled.article`
         flex-direction: column;
         align-items: flex-start;
         padding: 10px 10px 10px 10px;
-        width: 330px;
-        height: 170px;
         background: #FFFFFF;
         border-radius: 5px;
         margin-bottom: 30px;
@@ -53,7 +51,10 @@ const HabitHTML = styled.article`
             box-sizing: border-box;
             border-radius: 5px;
             border: 1px solid #D4D4D4;
-            color: #000;
-            margin: 0 0 8px 0;
+            color: #666666;
+            border: none;
+        }
+        .teste{
+            height: 100%;
         }
 `;

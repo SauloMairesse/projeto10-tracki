@@ -354,7 +354,6 @@ const HabitosHTML = styled.div`
         background-color: #FFFFFF;
         border: 1px solid #D4D4D4;
         color: #DBDBDB;
-        margin-bottom: 55px;
     }
     .selecionado{
         background: #CFCFCF;
