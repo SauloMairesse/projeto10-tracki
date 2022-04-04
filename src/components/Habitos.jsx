@@ -24,10 +24,13 @@ export default function Habitos(){
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
         const promise = axios.post(URL, {name: newHabit.name,
                                          days: days}, config)
-        promise.then( (response) => { console.log('consegui postar')} )
+        promise.then( (response) => { console.log('consegui postar', days)} )
         promise.catch( (err) => console.log(err) )
     }
 
+    const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
+    promise.then( (response) => { console.log('pegando a lista de habitos', response.data)} )
+    promise.catch( (err) => console.log(err) )    
 
     if(addHabit === 0 ){
         return(
@@ -75,7 +78,6 @@ export default function Habitos(){
                                                                 else{
                                                                     e.target.className = 'days selecionado'
                                                                     days = [...days, '1']
-                                                                    console.log(days.push('1'))
                                                                 }} }> 
                                 D   </button>
                             <button className="days" id='2' onClick={ (e) => {if(e.target.className === 'days selecionado'){
@@ -142,26 +144,6 @@ export default function Habitos(){
                 </footer> */}
             </HabitosHTML>
         )
-    }
-
-    if(addHabit === 2){
-        <HabitosHTML> 
-        <header>
-            <h1>teste</h1>
-            <img src={userINFO.image} alt="" />
-        </header>
-        <main>
-            <div className="subHeader" > 
-                <h3>Meus hábitos</h3>
-                <button className="add-hobby"> <p>+</p> </button>
-            </div>
-            
-        </main>
-        {/* <footer>
-            <h4> Hábitos </h4>
-            <h5> Histórico</h5>
-        </footer> */}
-    </HabitosHTML>
     }
 }
 
